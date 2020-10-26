@@ -1,0 +1,50 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+  
+.crud-section {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: baseline;
+}
+  
+.crud-section h1 {
+    width: 150px;
+}
+  
+.content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1rem;
+    margin: 0.5rem;
+    background-color: bisque;
+}
+  
+.content ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+}
+  
+.content form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+}
+  
+.content input {
+    margin: 0.25rem;
+}
+  
+.content button {
+    margin: 0.25rem;
+    background-color: chocolate;
+}
