@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
-import { mount, route } from 'navi';
-import { Router, View } from 'react-navi';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
+
 import Layout from './components/Layout';
 import About from './components/About';
 import Register from './components/Register';
@@ -11,30 +15,59 @@ import Dashboard from './components/Dashboard';
 
 import './index.css';
 
+function NotFound() {
+  return (
+    <div>
+        <h1>404 - Not Found</h1>
+    </div>
+  )
+}
+
+
 // Define the app routes
-const routes = mount({
-  '/': route({
-    title: "About us",
-    view: <About />
-  }),
-  '/dashboard': route({
-    title: "Dashboard",
-    view: <Dashboard />
-  }),
-  '/register': route({
-    title: "Register new account",
-    view: <Register />
-  }),
-  '/login': route({
-    title: "Login",
-    view: <Login />
-  }),
-});
+const routes = [
+  {
+    path: '/',
+    exact: true,
+    render: props => <About {...props} />
+  },
+  {
+    path: '/dashboard',
+    exact: true,
+    render: props => <Dashboard {...props} />
+  },
+  {
+    path: '/register',
+    exact: true,
+    render: props => <Register {...props} />
+  },
+  {
+    path: '/login',
+    exact: true,
+    render: props => <Login {...props} />
+  },
+  {
+    path: '*',
+    exact: true,
+    component: NotFound
+  },
+];
 
 ReactDOM.render(
-  <Router routes={routes}>
+  <Router>
     <Layout>
-      <View />
+      <Switch>
+      {
+        routes.map(route => {
+          return (
+            <Route
+              key={route.path}
+              {...route}
+            />
+          );
+        })
+      }
+      </Switch>
     </Layout>
   </Router>,
   document.getElementById('root')

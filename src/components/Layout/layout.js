@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-navi';
+import { Link } from 'react-router-dom';
 
 import './layout.css';
 
@@ -8,14 +8,14 @@ function Layout(props) {
         <div className="module-border-wrap">
             <div className="module">
                 <nav className="navigation">
-                    <Link href="/">
+                    <Link to="/">
                         Birbs
                     </Link>
                     <section>
-                        <Link href="/register">
+                        <Link to="/register">
                             Sign up
                         </Link>
-                        <Link href="/login">
+                        <Link to="/login">
                             Login
                         </Link>
                     </section>
