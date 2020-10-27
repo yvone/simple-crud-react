@@ -21,7 +21,6 @@
     flex-direction: column;
     padding: 1rem;
     margin: 0.5rem;
-    background-color: bisque;
 }
   
 .content ul {
@@ -30,6 +29,7 @@
     grid-template-rows: 1fr;
     grid-column-gap: 8px;
     grid-row-gap: 8px;
+    list-style: none;
 }
   
 .content form {
@@ -45,6 +45,26 @@
 }
   
 .content button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 44px;
+    min-height: 44px;
+    
     margin: 0.25rem;
-    background-color: chocolate;
+    background-color:pink;
+    border: 3px solid lightsteelblue;
+
+}
+
+.content button:hover {
+    background-color: lightsteelblue;
+}
+
+.birb {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 1rem;
 }

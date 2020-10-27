@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Select from 'react-select';
 import './dashboard.css';
 
 function Dashboard() {
   const [status, setStatus] = useState('idle');
   const [birbs, setBirbs] = useState([]);
+  const [colors, setColors] = useState([]);
 
   useEffect(() => {
     setStatus('loading')
@@ -19,12 +21,11 @@ function Dashboard() {
       })
   }, []);
 
-  const resetForm = ({ name, birthDate, isAlive, sizeInInches, colors }) => {
+  const resetForm = ({ name, birthDate, isAlive, sizeInInches }) => {
     name.value = "";
     birthDate.value = "";
     isAlive.checked = false;
     sizeInInches.value = "";
-    colors.value = "";
   }
 
   const handleError = (error) => {
@@ -51,8 +52,7 @@ function Dashboard() {
       name,
       birthDate,
       isAlive,
-      sizeInInches,
-      colors,
+      sizeInInches
     } = event.target.elements;
 
     axios
@@ -61,7 +61,7 @@ function Dashboard() {
         birthDate: birthDate.value,
         isAlive: isAlive.checked,
         sizeInInches: Number(sizeInInches.value),
-        colors: colors.value.split(','),
+        colors: colors.map(color => color.value),
       })
       .then(result => {
         setStatus('success')
@@ -69,7 +69,8 @@ function Dashboard() {
           ...birbs,
           result.data
         ])
-        resetForm({ name, birthDate, isAlive, sizeInInches, colors })
+        resetForm({ name, birthDate, isAlive, sizeInInches })
+        setColors([])
       })
       .catch(handleError)
   }
@@ -86,6 +87,23 @@ function Dashboard() {
       .catch(handleError)
   }
 
+  const optionsColors = [
+    { value: 'red', label: 'Red'},
+    { value: 'blue', label: 'Blue'},
+    { value: 'yellow', label: 'Yellow'},
+    { value: 'purple', label: 'Purple'},
+    { value: 'orange', label: 'Orange'},
+    { value: 'green', label: 'Green'},
+    { value: 'white', label: 'White'},
+    { value: 'black', label: 'Black'},
+    { value: 'gray', label: 'Gray'},
+    { value: 'brown', label: 'Brown'},
+    { value: 'pink', label: 'Pink'},
+    { value: 'turquoise', label: 'Turquoise'},
+    { value: 'light green', label: 'Light green'},
+    { value: 'light blue', label: 'Light blue'},
+  ]
+
   if(status === 'error') {
     return (
       <div className="layout">Oops! something went wrong :(</div>
@@ -101,21 +119,6 @@ function Dashboard() {
   if(status === 'success') {
     return (
       <nav className="layout">
-        <section className="crud-section">
-          <h1>Hey look! Birbs!</h1>
-          <div className="content">
-            <ul>
-              {birbs.map(birb => (
-                <li key={birb._id}>
-                  <p>{birb.name}</p>
-                  <button onClick={() => handleDelete(birb._id)}>
-                    x
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
         <section className="crud-section">
           <h1>Let's add more!</h1>
           <div className="content">
@@ -150,13 +153,32 @@ function Dashboard() {
                 />
               </span>
               <span>
-                <label htmlFor="colors">Colors (separated by commas, no spaces)</label>
-                <input
+                <Select
+                  isMulti
                   name="colors"
+                  options={optionsColors}
+                  placeholder="Colors"
+                  value={colors}
+                  onChange={setColors}
                 />
               </span>
               <button>SAVE</button>
             </form>
+          </div>
+        </section>
+        <section className="crud-section">
+          <h1>Hey look! Birbs!</h1>
+          <div className="content">
+            <ul>
+              {birbs.map(birb => (
+                <li key={birb._id} className="birb">
+                  <p>{birb.name}</p>
+                  <button onClick={() => handleDelete(birb._id)}>
+                    x
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       </nav>

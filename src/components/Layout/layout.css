@@ -1,0 +1,36 @@
+body {
+    height: 100vh;
+    margin: 1rem;
+    display: grid;
+    place-items: center;
+}
+  
+.module-border-wrap {
+    padding: 1rem;
+    position: relative;
+    background: linear-gradient(to right, lightblue, pink);
+    padding: 1rem;
+}
+  
+.module {
+    background: white;
+    padding: 2rem;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+a {
+    text-decoration: none;
+    color: gray;
+    font-weight: 800;
+
+    margin: 0.25rem;
+}
+
+a:hover {
+    color: pink;
+}
