@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Select from 'react-select';
+import BirbForm from '../BirbForm';
+
 import './dashboard.css';
 
 function Dashboard() {
   const [status, setStatus] = useState('idle');
   const [birbs, setBirbs] = useState([]);
-  const [colors, setColors] = useState([]);
 
   useEffect(() => {
     setStatus('loading')
@@ -20,13 +20,6 @@ function Dashboard() {
         setStatus('error')
       })
   }, []);
-
-  const resetForm = ({ name, birthDate, isAlive, sizeInInches }) => {
-    name.value = "";
-    birthDate.value = "";
-    isAlive.checked = false;
-    sizeInInches.value = "";
-  }
 
   const handleError = (error) => {
     setStatus('error')
@@ -46,33 +39,11 @@ function Dashboard() {
     console.log(error.config.data);
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const {
-      name,
-      birthDate,
-      isAlive,
-      sizeInInches
-    } = event.target.elements;
-
-    axios
-      .post('http://192.168.100.9:5000/birds', {
-        name: name.value,
-        birthDate: birthDate.value,
-        isAlive: isAlive.checked,
-        sizeInInches: Number(sizeInInches.value),
-        colors: colors.map(color => color.value),
-      })
-      .then(result => {
-        setStatus('success')
-        setBirbs([
-          ...birbs,
-          result.data
-        ])
-        resetForm({ name, birthDate, isAlive, sizeInInches })
-        setColors([])
-      })
-      .catch(handleError)
+  const handleChangeBirbs = (birb) => {
+    setBirbs([
+        ...birbs,
+        birb
+    ])
   }
 
   const handleDelete = (id) => {
@@ -86,23 +57,6 @@ function Dashboard() {
       })
       .catch(handleError)
   }
-
-  const optionsColors = [
-    { value: 'red', label: 'Red'},
-    { value: 'blue', label: 'Blue'},
-    { value: 'yellow', label: 'Yellow'},
-    { value: 'purple', label: 'Purple'},
-    { value: 'orange', label: 'Orange'},
-    { value: 'green', label: 'Green'},
-    { value: 'white', label: 'White'},
-    { value: 'black', label: 'Black'},
-    { value: 'gray', label: 'Gray'},
-    { value: 'brown', label: 'Brown'},
-    { value: 'pink', label: 'Pink'},
-    { value: 'turquoise', label: 'Turquoise'},
-    { value: 'light green', label: 'Light green'},
-    { value: 'light blue', label: 'Light blue'},
-  ]
 
   if(status === 'error') {
     return (
@@ -122,48 +76,12 @@ function Dashboard() {
         <section className="crud-section">
           <h1>Let's add more!</h1>
           <div className="content">
-            <form onSubmit={handleSubmit}>
-              <span>
-                <label htmlFor="name">Name</label>
-                <input
-                  name="name"
-                />
-              </span>
-              <span>
-                <label htmlFor="birthDate">Birthday</label>
-                <input
-                  name="birthDate"
-                  type="date"
-                />
-              </span>
-              <span>
-                <input
-                  name="isAlive"
-                  type="checkbox"
-                />
-                <label htmlFor="isAlive">Is Alive</label>
-              </span>
-              <span>
-                <label htmlFor="sizeInInches">Size (In)</label>
-                <input
-                  name="sizeInInches"
-                  type="range"
-                  min="2"
-                  max="8"
-                />
-              </span>
-              <span>
-                <Select
-                  isMulti
-                  name="colors"
-                  options={optionsColors}
-                  placeholder="Colors"
-                  value={colors}
-                  onChange={setColors}
-                />
-              </span>
-              <button>SAVE</button>
-            </form>
+            <BirbForm
+              status={status}
+              setStatus={setStatus}
+              handleChangeBirbs={handleChangeBirbs}
+              handleError={handleError}
+            />
           </div>
         </section>
         <section className="crud-section">
